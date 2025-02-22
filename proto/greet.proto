@@ -1,0 +1,41 @@
+syntax="proto3";
+
+option go_package="./proto";
+
+package greet_service;
+
+service GreetService{
+    //first type  -> simple req response(unary api)
+    rpc SayHello(NoParam) returns (HelloResponse);
+
+    //second type -> server side streaming, client sends req server responds with stream
+    rpc SayHelloServerStreaming(NamesList) returns (stream HelloResponse);
+    //alays stream keyword with small s 
+
+
+    //third -> client sends stream server responds back  
+    rpc SayHelloClientStreaming(stream HelloRequest) returns (MessagesList);
+
+    //bi-directional -> used very commonly everywhere
+    rpc SayHelloBidirectionalStreaming(stream HelloRequest) returns (stream HelloResponse);
+
+
+}
+
+message NoParam{}
+
+message HelloRequest{
+    string name=1;
+}
+
+message HelloResponse{
+    string message=1; 
+}
+
+message NamesList{
+    repeated string names=1;//repeated means an array(list of names here)
+}
+
+message MessagesList{
+    repeated string message=1;
+}
